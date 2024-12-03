@@ -17,18 +17,15 @@ extension GitHubApi {
 struct RepositoriesListRequest: GitHubApi {    
     typealias SuccessResponse = RepositoriesListResponse
 
+    private let pageNumber: Int
     private let sort: RepositoriesListSort
-    private let perPage: Int
-    private let page: Int
 
     init(
-        sort: RepositoriesListSort,
-        perPage: Int,
-        page: Int
+        pageNumber: Int,
+        sort: RepositoriesListSort
     ) {
+        self.pageNumber = pageNumber
         self.sort = sort
-        self.perPage = perPage
-        self.page = page
     }
 
     var method: HTTPMethod {
@@ -43,8 +40,8 @@ struct RepositoriesListRequest: GitHubApi {
         [
             "q": "swift",
             "sort": sort.rawValue,
-            "per_page": perPage,
-            "page": page,
+            "per_page": 15,
+            "page": pageNumber,
             "order": "desc"
         ]
     }

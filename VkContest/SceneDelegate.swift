@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         let viewController = RepositoriesListAssembly.assemble()
-        window.rootViewController = viewController
+        window.rootViewController = UINavigationController(rootViewController: viewController)
         self.window = window
         window.makeKeyAndVisible()
     }
