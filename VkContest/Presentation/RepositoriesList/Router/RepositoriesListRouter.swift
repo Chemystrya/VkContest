@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol RepositoriesListRouter {
+protocol RepositoriesListRouterInput {
     func showEditingScreen(with inputModel: RepositoryEditingInputModel)
 }
 
 final class RepositoriesListRouterImpl: BaseRouter {}
 
-extension RepositoriesListRouterImpl: RepositoriesListRouter {
+extension RepositoriesListRouterImpl: RepositoriesListRouterInput {
     func showEditingScreen(with inputModel: RepositoryEditingInputModel) {
         let viewController = RepositoryEditingAssembly.assemble(with: inputModel)
         transitionHandler?.pushModule(with: viewController, animated: true)

@@ -36,6 +36,7 @@ final class RepositoryEditingViewController: UIViewController {
         super.viewDidLoad()
 
         commonInit()
+        hideKeyboardWhenTappedAround()
         output?.viewDidLoad()
     }
 }

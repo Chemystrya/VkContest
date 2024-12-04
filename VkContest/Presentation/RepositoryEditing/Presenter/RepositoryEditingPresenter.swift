@@ -12,7 +12,7 @@ final class RepositoryEditingPresenter: NSObject {
     private weak var view: RepositoryEditingViewInput?
     private weak var moduleOutput: RepositoryEditingModuleOutput?
 
-    private let interactor: RepositoryEditingInteractor
+    private let interactor: RepositoryEditingInteractorInput
     private let pageNumber: Int
     private let sort: RepositoriesListSort
 
@@ -20,7 +20,7 @@ final class RepositoryEditingPresenter: NSObject {
 
     init(
         view: RepositoryEditingViewInput?,
-        interactor: RepositoryEditingInteractor,
+        interactor: RepositoryEditingInteractorInput,
         inputModel: RepositoryEditingInputModel
     ) {
         self.view = view
@@ -58,20 +58,19 @@ extension RepositoryEditingPresenter: RepositoryEditingViewOutput {
     }
 }
 
-// MARK: - RepositoriesListViewOutput
+// MARK: - RepositoryEditingInteractorOutput
 extension RepositoryEditingPresenter: RepositoryEditingInteractorOutput {
     func repositoriesUpdated(with items: [RepositoryListItem]) {
         moduleOutput?.itemsUpdated(with: items)
     }
 }
 
-// MARK: - Private methods
+// MARK: - TextFieldDelegate
 extension RepositoryEditingPresenter: TextFieldDelegate {
     func textFieldDidEndEditing(for type: TextFieldViewModel.FieldType, with text: String?) {
         switch type {
         case .title:
             item.name = text ?? ""
-            print(item.name)
         case .description:
             item.description = text
         }

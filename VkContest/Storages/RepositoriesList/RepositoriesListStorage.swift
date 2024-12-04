@@ -56,7 +56,7 @@ final class RepositoriesListStorageImpl: RepositoriesListStorage {
 
     @MainActor func edit(item: RepositoryListItem, pageNumber: Int, sort: RepositoriesListSort) throws -> [RepositoriesListPage]? {
         let descriptor = FetchDescriptor<RepositoriesListPage>()
-        let pages = try? container.mainContext.fetch(descriptor)
+        let pages = try? container.mainContext.fetch(descriptor).filter { $0.sort == sort }
 
         guard
             let page = pages?.first(where: { $0.number == pageNumber && $0.sort == sort }),

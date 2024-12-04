@@ -10,8 +10,8 @@ import UIKit
 
 final class RepositoriesListPresenter {
     private weak var view: RepositoriesListViewInput?
-    private let interactor: RepositoriesListInteractor
-    private let router: RepositoriesListRouter
+    private let interactor: RepositoriesListInteractorInput
+    private let router: RepositoriesListRouterInput
     private let perPage = 15
 
     private var items: [RepositoryListItem] = []
@@ -20,8 +20,8 @@ final class RepositoriesListPresenter {
 
     init(
         view: RepositoriesListViewInput?,
-        interactor: RepositoriesListInteractor,
-        router: RepositoriesListRouter
+        interactor: RepositoriesListInteractorInput,
+        router: RepositoriesListRouterInput
     ) {
         self.view = view
         self.interactor = interactor
