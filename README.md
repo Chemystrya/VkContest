@@ -8,5 +8,6 @@
   6. Стейт загрузки
   7. Отображение текущих FPS
   8. Написаны Unit-тесты
-<img src="https://github.com/user-attachments/assets/ae5bcd14-ccc4-4669-808f-5c5aabb5c8382" width="300">
+
 https://disk.yandex.ru/i/cqkEp4-sZlZNIg - демо видео
+<img src="https://github.com/user-attachments/assets/ae5bcd14-ccc4-4669-808f-5c5aabb5c8382" width="300">
