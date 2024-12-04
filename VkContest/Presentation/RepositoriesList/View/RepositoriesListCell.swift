@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 
 struct RepositoriesListCellViewModel: Hashable {
+    let uniqHashId: Int
     let title: String
     let description: String
     let avatarUrl: URL?

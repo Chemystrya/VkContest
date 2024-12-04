@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RepositoriesListSort: String, Codable {
+enum RepositoriesListSort: String, Codable, CaseIterable {
     case stars
     case forks
     case helpWantedIssues = "help-wanted-issues"

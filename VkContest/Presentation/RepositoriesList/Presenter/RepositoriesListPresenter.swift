@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class RepositoriesListPresenter {
     private weak var view: RepositoriesListViewInput?
@@ -35,6 +36,17 @@ extension RepositoriesListPresenter: RepositoriesListViewOutput {
         view?.setupTryAgainButtonAction { [weak self] in
             self?.loadRepositories()
         }
+        let menuActions: [UIAction] = RepositoriesListSort.allCases.map { sort in
+            UIAction(title: sort.rawValue) { [weak self] _ in
+                guard let self, self.sort != sort else { return }
+
+                self.pageNumber = 1
+                self.sort = sort
+                self.items = []
+                self.loadRepositories()
+            }
+        }
+        view?.setupSortMenu(with: menuActions)
     }
 
     func willDisplayCell(with indexPath: IndexPath) {
@@ -96,8 +108,9 @@ extension RepositoriesListPresenter {
     }
 
     private func updateDataSource() {
-        let viewModels = items.map { item in
+        let viewModels = items.enumerated().map { index, item in
             RepositoriesListCellViewModel(
+                uniqHashId: index,
                 title: item.name,
                 description: item.description ?? "no description",
                 avatarUrl: URL(string: item.owner.avatarUrl)

@@ -14,6 +14,7 @@ protocol RepositoriesListViewInput: AnyObject {
     func setupTryAgainButtonAction(action: (() -> Void)?)
     func startLoading()
     func stopLoading()
+    func setupSortMenu(with actions: [UIAction])
 }
 
 protocol RepositoriesListViewOutput: AnyObject {
@@ -44,11 +45,25 @@ final class RepositoriesListViewController: UIViewController {
         return button
     }()
 
+    private var displayLink = CADisplayLink()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         commonInit()
         output?.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        self.setUpDisplayLink()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        displayLink.remove(from: .main, forMode: RunLoop.Mode.common)
     }
 }
 
@@ -76,6 +91,16 @@ extension RepositoriesListViewController: RepositoriesListViewInput {
     func stopLoading() {
         activityIndicator.stopAnimating()
     }
+
+    func setupSortMenu(with actions: [UIAction]) {
+        let menu = UIMenu(title: "Выберите принцип сортировки:", image: nil, identifier: nil, options: [], children: actions)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "",
+            image: UIImage(systemName: "arrow.up.arrow.down")?.withTintColor(.black, renderingMode: .alwaysOriginal),
+            primaryAction: nil,
+            menu: menu
+        )
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -97,7 +122,10 @@ extension RepositoriesListViewController: UITableViewDelegate {
         return config
     }
 
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         let editAction = UIContextualAction(style: .normal, title: "Изменить") { [weak self] _, _, completion in
             self?.output?.changeItem(at: indexPath)
             completion(true)
@@ -151,5 +179,15 @@ extension RepositoriesListViewController {
                 tryAgainButton.heightAnchor.constraint(equalToConstant: 64)
             ]
         )
+    }
+
+    private func setUpDisplayLink() {
+        displayLink = CADisplayLink(target: self, selector: #selector(update))
+        displayLink.add(to: .main, forMode: RunLoop.Mode.common)
+    }
+
+    @objc private func update() {
+        let actualFramesPerSecond = 1 / (displayLink.targetTimestamp - displayLink.timestamp)
+        title = "FPS: " + String(format: "%.010f", actualFramesPerSecond)
     }
 }
